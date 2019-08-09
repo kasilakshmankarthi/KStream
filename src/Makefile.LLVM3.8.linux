@@ -1,0 +1,19 @@
+
+MY_C_SRCS = stream_clk.c
+MY_OBJS = $(MY_C_SRCS:.c=.o)
+
+C_SRCS = $(MY_C_SRCS)
+
+TARGET = aarch64.llvm38.linux.$(ArraySize)
+PROG = stream.$(TARGET).elf
+CFLAGS = -lm -g -Ofast -static -D N=$(ArraySize) -fomit-frame-pointer -fno-common -ffast-math -funroll-loops -ftree-vectorize
+LDLIBS = -lm -static
+
+TOOLBIN = /prj/dcg/modeling/encnaa/workloads/share/toolchains/llvm_community_3.8.0/clang-tools/
+CC = $(TOOLBIN)clang-aarch64-x
+
+$(PROG): $(C_SRCS)
+	$(CC) -o $@ $(CFLAGS) $^ $(LDLIBS)
+
+clean:
+	rm -rf $(PROG)

@@ -1,0 +1,73 @@
+# Copyright (c) 2016 Qualcomm Technologies, Inc.
+# All Rights Reserved.
+# Confidential and Proprietary - Qualcomm Technologies, Inc.
+
+PROG1 = QStreamv1.elf
+PROG2 = QStreamv2.elf
+
+#$(info $$ARCH is [${ARCH}])
+
+ifeq ($(ARCH),aarch64)
+  ifeq ($(COMPILER), linaro)
+    CC = /prj/dcg/modeling/encnaa/workloads/share/toolchains/gcc-7.1.1-linaro17.08/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
+    CFLAGS = -static -O3 -ffp-contract=fast -mcpu=falkor -funroll-loops -Wpragmas
+    LDFLAGS = -static -flto
+  else
+    #export PATH := /prj/qct/qctps/enablement/perfopts/llvm-rtp/tools/clang-tools/:/prj/qct/qctps/enablement/perfopts/llvm-rtp/weeklies/latest_perf/bin:$(PATH)
+    export PATH := /prj/qct/qctps/enablement/perfopts/bmakam/tools/clang-tools:/prj/qct/qctps/enablement/perfopts/llvm-rtp/weeklies/latest_perf/bin:$(PATH)
+    CC = clang-aarch64-x
+    #clang --version
+    CFLAGS = -v -O3 -ffp-contract=fast -flto -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -W#pragma-messages
+    LDFLAGS = -v -O3 -ffp-contract=fast -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -static -flto
+  endif
+else
+  CC=/usr/bin/gcc
+  LDFLAGS = -static -lm -flto
+endif
+
+#-ggdb
+ifeq ($(ARCH),x86_64)
+  CFLAGS = -static -O3 -m64 -Wpragmas
+  ifeq ($(CPU), ivybridge)
+    CFLAGS += -march=ivybridge
+  else ifeq ($(CPU), haswell)
+    CFLAGS += -march=haswell
+  else ifeq ($(CPU), broadwell)
+    CFLAGS += -march=broadwell
+  endif
+endif
+
+ifeq ($(ARCH),aarch64)
+  local_angel=./disk/angel-utils
+  local_angel_include=$(local_angel)/libangel/include
+  local_angel_lib=$(local_angel)/build
+
+  CFLAGS += -DANGEL -I. -I$(local_angel_include)
+  LDFLAGS += -L$(local_angel_lib) -langel -lm
+endif
+
+all: $(PROG1) $(PROG2)
+#all: $(PROG2)
+
+SRC1 = streamv1_clk.c
+OBJS1 = $(SRC1:.c=.o)
+#Set the array size
+EXTRA_FLAGS1 := -D N=$(ArraySize)
+
+$(PROG1): $(SRC1)
+	#rm -f $(PROG1) $(OBJS1)
+	$(CC) $(CFLAGS) $(EXTRA_FLAGS1) -o $@ $^ $(LDFLAGS)
+
+SRC2 = streamv2_clk.c
+OBJS2 = $(SRC2:.c=.o)
+#Set the array size
+EXTRA_FLAGS2 := -D NMAX=$(ArraySize) -D NPAD=10
+
+$(PROG2): $(SRC2)
+	#rm -f $(PROG2) $(OBJS2)
+	#Set the array size
+	$(CC) $(CFLAGS) $(EXTRA_FLAGS2) -o $@ $^ $(LDFLAGS)
+
+clean:
+	rm -f $(PROG1) $(OBJS1)
+	rm -f $(PROG2) $(OBJS2)
