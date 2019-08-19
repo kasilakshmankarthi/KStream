@@ -1,5 +1,5 @@
 # KStream
-Modified Streamv1 and Streamv2 to suit QDT model runs
+Modified Streamv1 and Streamv2 to suit performance model runs.
 
 Added support to run individual subtests
 
