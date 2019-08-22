@@ -1,7 +1,3 @@
-# Copyright (c) 2016 Qualcomm Technologies, Inc.
-# All Rights Reserved.
-# Confidential and Proprietary - Qualcomm Technologies, Inc.
-
 PROG1 = QStreamv1.elf
 PROG2 = QStreamv2.elf
 
@@ -9,12 +5,11 @@ PROG2 = QStreamv2.elf
 
 ifeq ($(ARCH),aarch64)
   ifeq ($(COMPILER), linaro)
-    CC = /prj/dcg/modeling/encnaa/workloads/share/toolchains/gcc-7.1.1-linaro17.08/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
+    CC = <>/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
     CFLAGS = -static -O3 -ffp-contract=fast -mcpu=falkor -funroll-loops -Wpragmas
     LDFLAGS = -static -flto
   else
-    #export PATH := /prj/qct/qctps/enablement/perfopts/llvm-rtp/tools/clang-tools/:/prj/qct/qctps/enablement/perfopts/llvm-rtp/weeklies/latest_perf/bin:$(PATH)
-    export PATH := /prj/qct/qctps/enablement/perfopts/bmakam/tools/clang-tools:/prj/qct/qctps/enablement/perfopts/llvm-rtp/weeklies/latest_perf/bin:$(PATH)
+    export PATH := <>/tools/clang-tools:<>/llvm/weeklies/latest_perf/bin:$(PATH)
     CC = clang-aarch64-x
     #clang --version
     CFLAGS = -v -O3 -ffp-contract=fast -flto -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -W#pragma-messages
