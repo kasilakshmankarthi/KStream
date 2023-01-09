@@ -47,22 +47,29 @@ for i in 2K 4K 8K 16K 32K 64K 128K 256K 512K 5M 15M 32M
       fi
 
       if [ "$TARGET" = "aarch64" ] || [ "$TARGET" == "all" ]; then
-          #Build aarch64 bin
-          make -f Makefile clean
-          make VERBOSE=1 -f Makefile ARCH=aarch64 COMPILER=llvm ArraySize=${arrSz}
-          mv QStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
-          mv QStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
-          echo "Completed LLVM build for" ${i}" array elements"
-          echo "-----------------------------------------------"
+        #Build aarch64 bin
+        #   make -f Makefile clean
+        #   make VERBOSE=1 -f Makefile ARCH=aarch64 COMPILER=llvm ArraySize=${arrSz}
+        #   mv QStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
+        #   mv QStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
+        #   echo "Completed LLVM build for" ${i}" array elements"
+        #   echo "-----------------------------------------------"
 
-          make -f Makefile clean
-          make VERBOSE=1 -f Makefile ARCH=aarch64 COMPILER=linaro ArraySize=${arrSz}
-          mv QStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
-          mv QStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
-          echo "Completed Linaro build for" ${i}" array elements"
-          echo "-----------------------------------------------"
+        #   make -f Makefile clean
+        #   make VERBOSE=1 -f Makefile ARCH=aarch64 COMPILER=linaro ArraySize=${arrSz}
+        #   mv QStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
+        #   mv QStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
+        #   echo "Completed Linaro build for" ${i}" array elements"
+        #   echo "-----------------------------------------------"
 
-          echo "Completed building aarch64 elf"
+        make -f Makefile clean
+        make VERBOSE=1 -f Makefile ARCH=aarch64 ArraySize=${arrSz}
+        mv QStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.linux.elf
+        mv QStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.linux.elf
+        echo "Completed arm64 native gcc compiler build for" ${i}" array elements"
+        echo "-----------------------------------------------"
+
+        echo "Completed building aarch64 elf"
       fi
 done
 

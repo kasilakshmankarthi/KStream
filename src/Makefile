@@ -8,12 +8,15 @@ ifeq ($(ARCH),aarch64)
     CC = <>/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
     CFLAGS = -static -O3 -ffp-contract=fast -mcpu=falkor -funroll-loops -Wpragmas
     LDFLAGS = -static -flto
-  else
+  else ifeq ($(COMPILER), linaro)
     export PATH := <>/tools/clang-tools:<>/llvm/weeklies/latest_perf/bin:$(PATH)
     CC = clang-aarch64-x
     #clang --version
     CFLAGS = -v -O3 -ffp-contract=fast -flto -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -W#pragma-messages
     LDFLAGS = -v -O3 -ffp-contract=fast -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -static -flto
+  else
+    CC=/usr/bin/gcc
+    LDFLAGS = -static -lm -flto
   endif
 else
   CC=/usr/bin/gcc
@@ -33,12 +36,17 @@ ifeq ($(ARCH),x86_64)
 endif
 
 ifeq ($(ARCH),aarch64)
-  local_angel=./disk/angel-utils
-  local_angel_include=$(local_angel)/libangel/include
-  local_angel_lib=$(local_angel)/build
+  ifeq ($(ARCH),aarch64_angel)
+    local_angel=./disk/angel-utils
+    local_angel_include=$(local_angel)/libangel/include
+    local_angel_lib=$(local_angel)/build
 
-  CFLAGS += -DANGEL -I. -I$(local_angel_include)
-  LDFLAGS += -L$(local_angel_lib) -langel -lm
+    CFLAGS += -DANGEL -I. -I$(local_angel_include)
+    LDFLAGS += -L$(local_angel_lib) -langel -lm
+  else
+    CFLAGS += -I. 
+    LDFLAGS += -lm
+  endif  
 endif
 
 all: $(PROG1) $(PROG2)
