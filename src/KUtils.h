@@ -2,14 +2,18 @@
 #define KUtils_H
 
 #include <inttypes.h>
+
+#ifdef LINUX_OS
 #include <linux/perf_event.h>
+#include <asm/unistd.h>
+#endif
 #include <sched.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <asm/unistd.h>
+#include <time.h>
 
 #ifdef CHRONO
 #include <chrono>

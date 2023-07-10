@@ -1,0 +1,64 @@
+PROG2 = KStreamv2.elf
+
+#$(info $$ARCH is [${ARCH}])
+
+ifeq ($(ARCH),aarch64)
+  ifeq ($(COMPILER), linaro)
+    CC = <>/aarch64-linux-gnu/bin/aarch64-linux-gnu-gcc
+    CFLAGS = -static -O3 -ffp-contract=fast -mcpu=falkor -funroll-loops -Wpragmas
+    LDFLAGS = -static -flto
+  else ifeq ($(COMPILER), linaro)
+    export PATH := <>/tools/clang-tools:<>/llvm/weeklies/latest_perf/bin:$(PATH)
+    CC = clang-aarch64-x
+    #clang --version
+    CFLAGS = -v -O3 -ffp-contract=fast -flto -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -W#pragma-messages
+    LDFLAGS = -v -O3 -ffp-contract=fast -fuse-ld=gold -mcpu=falkor -fomit-frame-pointer -fwhole-program-vtables -fvisibility=hidden -static -flto
+  else
+    CC=/usr/bin/gcc
+    LDFLAGS = -static -lm -flto
+  endif
+else
+  CC=gcc
+  LDFLAGS = -static -lm -flto
+endif
+
+#-ggdb
+ifeq ($(ARCH),x86_64)
+  CFLAGS = -static -O3 -m64 -Wpragmas
+  ifeq ($(CPU), ivybridge)
+    CFLAGS += -march=ivybridge
+  else ifeq ($(CPU), haswell)
+    CFLAGS += -march=haswell
+  else ifeq ($(CPU), broadwell)
+    CFLAGS += -march=broadwell
+  endif
+endif
+
+ifeq ($(ARCH),aarch64)
+  ifeq ($(ARCH),aarch64_angel)
+    local_angel=./disk/angel-utils
+    local_angel_include=$(local_angel)/libangel/include
+    local_angel_lib=$(local_angel)/build
+
+    CFLAGS += -DANGEL -I. -I$(local_angel_include)
+    LDFLAGS += -L$(local_angel_lib) -langel -lm
+  else
+    CFLAGS += -I. 
+    LDFLAGS += -lm
+  endif  
+endif
+
+all: $(PROG2)
+
+SRC2 = streamv2_clk.c
+OBJS2 = $(SRC2:.c=.o)
+#Set the array size
+EXTRA_FLAGS2 := -D NMAX=$(ArraySize) -D NPAD=10
+
+$(PROG2): $(SRC2)
+	#rm -f $(PROG2) $(OBJS2)
+	#Set the array size
+	$(CC) $(CFLAGS) $(EXTRA_FLAGS2) -o $@ $^ $(LDFLAGS)
+
+clean:
+	rm -f $(PROG2) $(OBJS2)	

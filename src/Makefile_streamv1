@@ -1,5 +1,8 @@
-PROG1 = KStreamv1.elf
-PROG2 = KStreamv2.elf
+ifeq (($OS), linux)
+  PROG1 = KStreamv1
+else
+  PROG1 = KStreamv1.exe
+endif
 
 #$(info $$ARCH is [${ARCH}])
 
@@ -19,7 +22,7 @@ ifeq ($(ARCH),aarch64)
     LDFLAGS = -static -lm -flto
   endif
 else
-  CC=/usr/bin/gcc
+  CC=gcc
   LDFLAGS = -static -lm -flto
 endif
 
@@ -49,8 +52,7 @@ ifeq ($(ARCH),aarch64)
   endif  
 endif
 
-all: $(PROG1) $(PROG2)
-#all: $(PROG2)
+all: $(PROG1)
 
 SRC1 = streamv1_clk.c
 OBJS1 = $(SRC1:.c=.o)
@@ -58,19 +60,7 @@ OBJS1 = $(SRC1:.c=.o)
 EXTRA_FLAGS1 := -D N=$(ArraySize)
 
 $(PROG1): $(SRC1)
-	#rm -f $(PROG1) $(OBJS1)
 	$(CC) $(CFLAGS) $(EXTRA_FLAGS1) -o $@ $^ $(LDFLAGS)
 
-SRC2 = streamv2_clk.c
-OBJS2 = $(SRC2:.c=.o)
-#Set the array size
-EXTRA_FLAGS2 := -D NMAX=$(ArraySize) -D NPAD=10
-
-$(PROG2): $(SRC2)
-	#rm -f $(PROG2) $(OBJS2)
-	#Set the array size
-	$(CC) $(CFLAGS) $(EXTRA_FLAGS2) -o $@ $^ $(LDFLAGS)
-
 clean:
-	rm -f $(PROG1) $(OBJS1)
-	rm -f $(PROG2) $(OBJS2)
+	rm -f $(PROG1) $(OBJS1)	

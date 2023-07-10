@@ -20,29 +20,29 @@ for i in 2K 4K 8K 16K 32K 64K 128K 256K 512K 5M 15M 32M
 
           make -f Makefile clean
           make VERBOSE=1 -f Makefile ARCH=x86_64 ArraySize=${arrSz}
-          mv KStreamv1.elf bin/QStreamv1.${i}x8B.x86_64.gcc.6.3.0.linux.elf
-          mv KStreamv2.elf bin/QStreamv2.${i}x8B.x86_64.gcc.6.3.0.linux.elf
+          mv KStreamv1.elf bin/KStreamv1.${i}x8B.x86_64.gcc.6.3.0.linux.elf
+          mv KStreamv2.elf bin/KStreamv2.${i}x8B.x86_64.gcc.6.3.0.linux.elf
           echo "Completed building x86_64 elf"
 
           #IvyBridge
           #make -f Makefile clean
           #make -f Makefile ARCH=x86_64 CPU=ivybridge
-          #mv KStreamv1.elf bin/QStreamv1.x86_64.ivybridge.gcc.6.3.0.linux.elf
-          #mv KStreamv2.elf bin/QStreamv2.x86_64.ivybridge.gcc.6.3.0.linux.elf
+          #mv KStreamv1.elf bin/KStreamv1.x86_64.ivybridge.gcc.6.3.0.linux.elf
+          #mv KStreamv2.elf bin/KStreamv2.x86_64.ivybridge.gcc.6.3.0.linux.elf
           #echo "Completed building x86_64 ivybridge elf"
 
           #Haswell
           #make -f Makefile clean
           #make -f Makefile ARCH=x86_64 CPU=haswell
-          #mv KStreamv1.elf bin/QStreamv1.x86_64.haswell.gcc.6.3.0.linux.elf
-          #mv KStreamv2.elf bin/QStreamv2.x86_64.haswell.gcc.6.3.0.linux.elf
+          #mv KStreamv1.elf bin/KStreamv1.x86_64.haswell.gcc.6.3.0.linux.elf
+          #mv KStreamv2.elf bin/KStreamv2.x86_64.haswell.gcc.6.3.0.linux.elf
           #echo "Completed building x86_64 haswell elf"
 
           ##Broadwell
           #make -f Makefile clean
           #make -f Makefile ARCH=x86_64 CPU=broadwell
-          #mv KStreamv1.elf bin/QStreamv1.x86_64.broadwell.gcc.6.3.0.linux.elf
-          #mv KStreamv2.elf bin/QStreamv2.x86_64.broadwell.gcc.6.3.0.linux.elf
+          #mv KStreamv1.elf bin/KStreamv1.x86_64.broadwell.gcc.6.3.0.linux.elf
+          #mv KStreamv2.elf bin/KStreamv2.x86_64.broadwell.gcc.6.3.0.linux.elf
           #echo "Completed building x86_64 broadwell elf"
       fi
 
@@ -50,22 +50,22 @@ for i in 2K 4K 8K 16K 32K 64K 128K 256K 512K 5M 15M 32M
         #Build aarch64 bin
         #   make -f Makefile clean
         #   make VERBOSE=1 -f Makefile ARCH=aarch64 COMPILER=llvm ArraySize=${arrSz}
-        #   mv KStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
-        #   mv KStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
+        #   mv KStreamv1.elf bin/KStreamv1.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
+        #   mv KStreamv2.elf bin/KStreamv2.${i}x8B.aarch64.gcc.llvm6.0.0.linux.elf
         #   echo "Completed LLVM build for" ${i}" array elements"
         #   echo "-----------------------------------------------"
 
         #   make -f Makefile clean
         #   make VERBOSE=1 -f Makefile ARCH=aarch64 COMPILER=linaro ArraySize=${arrSz}
-        #   mv KStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
-        #   mv KStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
+        #   mv KStreamv1.elf bin/KStreamv1.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
+        #   mv KStreamv2.elf bin/KStreamv2.${i}x8B.aarch64.gcc.lin7.1.1.linux.elf
         #   echo "Completed Linaro build for" ${i}" array elements"
         #   echo "-----------------------------------------------"
 
         make -f Makefile clean
         make VERBOSE=1 -f Makefile ARCH=aarch64 ArraySize=${arrSz}
-        mv KStreamv1.elf bin/QStreamv1.${i}x8B.aarch64.gcc.linux.elf
-        mv KStreamv2.elf bin/QStreamv2.${i}x8B.aarch64.gcc.linux.elf
+        mv KStreamv1.elf bin/KStreamv1.${i}x8B.aarch64.gcc.linux.elf
+        mv KStreamv2.elf bin/KStreamv2.${i}x8B.aarch64.gcc.linux.elf
         echo "Completed arm64 native gcc compiler build for" ${i}" array elements"
         echo "-----------------------------------------------"
 
