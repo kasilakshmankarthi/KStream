@@ -1,5 +1,5 @@
-PROG1 = QStreamv1.elf
-PROG2 = QStreamv2.elf
+PROG1 = KStreamv1.elf
+PROG2 = KStreamv2.elf
 
 #$(info $$ARCH is [${ARCH}])
 
